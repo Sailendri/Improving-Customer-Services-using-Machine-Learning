@@ -1,0 +1,39 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+customers=pd.read_csv('Ecommerce Customers')
+print(customers.head())
+customers.describe()
+print(customers.info())
+sns.jointplot(customers['Time on Website'],customers['Yearly Amount Spent'],data=customers)
+sns.jointplot(customers['Time on App'],customers['Yearly Amount Spent'],data=customers)
+sns.jointplot(x='Time on App', y ='Length of Membership',data=customers,kind='hex')
+sns.pairplot(customers)
+sns.lmplot('Yearly Amount Spent','Length of Membership',data=customers)
+x=customers[['Length of Membership','Time on Website', 'Time on App','Avg. Session Length']]
+y=customers['Yearly Amount Spent']
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(x, y, test_size=0.3, random_state=101)
+from sklearn.linear_model import LinearRegression
+lm = LinearRegression()
+lm.fit(X_train,y_train)
+print(lm.coef_)
+#custom input
+#pre=lm.predict([[2.66403418213262,37.268958868297744,11.109460728682564,31.926272026360156]])
+#print('ans')
+#print(pre)
+pre=lm.predict(X_test)
+plt.scatter(y_test,pre)
+plt.xlabel('y_test values')
+plt.ylabel('predicted values')
+from sklearn import metrics
+
+print('Mean Absolute Error:', metrics.mean_absolute_error(y_test, pre))
+print('Mean Squared Error:', metrics.mean_squared_error(y_test, pre))
+print('Root Mean Squared Error:', np.sqrt(metrics.mean_squared_error(y_test, pre)))
+sns.distplot((y_test-pre),bins=50);
+coeffecients = pd.DataFrame(lm.coef_,x.columns)
+coeffecients.columns = ['Coeffecient']
+coeffecients
