@@ -16,11 +16,8 @@ from sklearn.linear_model import LinearRegression
 lm = LinearRegression()
 lm.fit(X_train,y_train)
 
-#custom input
-#pre=lm.predict([[2.66403418213262,37.268958868297744,11.109460728682564,31.926272026360156]])
-#print('ans')
-#print(pre)
 pre=lm.predict(X_test)
+print(pre)
 plt.scatter(y_test,pre)
 plt.xlabel('y_test values')
 plt.ylabel('predicted values')
@@ -29,3 +26,8 @@ from sklearn import metrics
 print('Mean Absolute Error:', metrics.mean_absolute_error(y_test, pre))
 print('Mean Squared Error:', metrics.mean_squared_error(y_test, pre))
 print('Root Mean Squared Error:', np.sqrt(metrics.mean_squared_error(y_test, pre)))
+
+coeffecients = pd.DataFrame(lm.coef_,x.columns)
+coeffecients.columns = ['Coeffecient']
+print(coeffecients)
+
